@@ -393,57 +393,60 @@
           break;
       }
     },
-    
+
     showMessage: function(messageText, messageWidth) {
-      var coordinateX, coordinateY, messageHeight, 
-          PADDING = 10,
-          lineSpacing = 20,
-          message = messageText.split(' ');
-      
+      var coordinateX, coordinateY, messageHeight,
+        PADDING = 10,
+        lineSpacing = 20,
+        message = messageText.split(' ');
+
       //Определение координат сообщения в зависимости от положения персонажа
-      this.canvas.width - this.state.objects[0].x > this.canvas.width / 2 ? 
-        coordinateX = this.state.objects[0].x + 80 : 
+      if (this.canvas.width - this.state.objects[0].x > this.canvas.width / 2) {
+        coordinateX = this.state.objects[0].x + 80;
+      } else {
         coordinateX = this.state.objects[0].x - messageWidth;
-      this.canvas.height - this.state.objects[0].y > this.canvas.height / 2 ? 
-        coordinateY = this.state.objects[0].y + 80 :
+      }
+      if (this.canvas.height - this.state.objects[0].y > this.canvas.height / 2) {
+        coordinateY = this.state.objects[0].y + 80;
+      } else {
         coordinateY = this.state.objects[0].y - 80;
-      
+      }
+
       this.ctx.font = '16px PT Mono';
       this.ctx.textBaseline = 'hanging';
-      
+
       //Разделение текста на строки
       message.forEach(function(item, i, arr) {
         if (this.ctx.measureText(arr.join(' ')).width + PADDING * 2 < messageWidth) {
           message = arr.join(' ');
           return;
         } else {
-          message;
           while (this.ctx.measureText(message[i] + message[i + 1] + ' ' + PADDING * 2).width < messageWidth) {
             message.splice(i, 0, message.splice(i, 2).join(' '));
-            if (message[i + 1] == undefined) { //message.length - 1 == i
+            if (message.length - 1 === i) {
               return;
             }
           }
         }
       }, this);
-      
-      //Определение высоты сообщения 
+
+      //Определение высоты сообщения
       if (Array.isArray(message)) {
         messageHeight = lineSpacing * message.length + lineSpacing * 2;
       } else {
         messageHeight = lineSpacing * 3;
       }
-      
+
       //Отрисовка многоугольников
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-      this.ctx.fillRect(coordinateX + 10, coordinateY +10, messageWidth, messageHeight);
+      this.ctx.fillRect(coordinateX + 10, coordinateY + 10, messageWidth, messageHeight);
       this.ctx.fillStyle = '#FFFFFF';
       this.ctx.fillRect(coordinateX, coordinateY, messageWidth, messageHeight);
-      
+
       //Отрисовка текста
       this.ctx.fillStyle = '#000';
       if (Array.isArray(message)) {
-        message.forEach(function(item, i) { 
+        message.forEach(function(item, i) {
           this.ctx.fillText(message[i], coordinateX + PADDING, coordinateY + (i + 1) * lineSpacing);
         }, this);
       } else {
