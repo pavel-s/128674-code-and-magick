@@ -61,7 +61,7 @@
           formSubmitButton.disabled = true;
         }
       }
-      hideLink()
+      hideLink();
     };
 
     formReviewText.oninput = function() {
@@ -70,7 +70,7 @@
       } else {
         formSubmitButton.disabled = true;
       }
-      hideLink()
+      hideLink();
     };
 
     function hideLink() {
@@ -102,7 +102,7 @@
           formReviewLinks.classList.remove('invisible');
         }
       }
-    };
+    }
   }
 
 })();
