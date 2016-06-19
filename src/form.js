@@ -8,6 +8,7 @@
   var formReviewName = document.querySelector('.review-form-field-name');
   var formReviewMark = document.querySelectorAll('[name=review-mark]');
   var formReviewText = document.querySelector('.review-form-field-text');
+  var formReviewLinks = document.querySelector('.review-fields');
   var formReviewNameLink = document.querySelector('.review-fields-name');
   var formReviewTextLink = document.querySelector('.review-fields-text');
 
@@ -37,9 +38,11 @@
         if (mark.value < 3) {
           formReviewText.required = true;
           formReviewTextLink.classList.remove('invisible');
+          formSubmitButton.disabled = (formReviewName.validity.valid && formReviewText.validity.valid) ? false : true;
         } else {
           formReviewText.required = false;
           formReviewTextLink.classList.add('invisible');
+          formSubmitButton.disabled = (formReviewName.validity.valid) ? false : true;
         }
       };
     });
@@ -58,12 +61,7 @@
           formSubmitButton.disabled = true;
         }
       }
-
-      if (formReviewName.validity.valid) {
-        formReviewNameLink.classList.add('invisible');
-      } else {
-        formReviewNameLink.classList.remove('invisible');
-      }
+      hideLink()
     };
 
     formReviewText.oninput = function() {
@@ -72,11 +70,37 @@
       } else {
         formSubmitButton.disabled = true;
       }
+      hideLink()
+    };
 
-      if (formReviewText.validity.valid) {
-        formReviewTextLink.classList.add('invisible');
+    function hideLink() {
+      if (formReviewText.required) {
+        if (formReviewName.validity.valid) {
+          formReviewNameLink.classList.add('invisible');
+        } else {
+          formReviewNameLink.classList.remove('invisible');
+        }
+
+        if (formReviewText.validity.valid) {
+          formReviewTextLink.classList.add('invisible');
+        } else {
+          formReviewTextLink.classList.remove('invisible');
+        }
+
+        if (formReviewNameLink.classList.contains('invisible') && formReviewTextLink.classList.contains('invisible')) {
+          formReviewLinks.classList.add('invisible');
+        } else {
+          formReviewLinks.classList.remove('invisible');
+        }
+
       } else {
-        formReviewTextLink.classList.remove('invisible');
+        if (formReviewName.validity.valid) {
+          formReviewNameLink.classList.add('invisible');
+          formReviewLinks.classList.add('invisible');
+        } else {
+          formReviewNameLink.classList.remove('invisible');
+          formReviewLinks.classList.remove('invisible');
+        }
       }
     };
   }
