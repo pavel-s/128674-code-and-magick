@@ -1,6 +1,7 @@
 'use strict';
 
 (function() {
+  var form = document.querySelector('.review-form');
   var formContainer = document.querySelector('.overlay-container');
   var formOpenButton = document.querySelector('.reviews-controls-new');
   var formCloseButton = document.querySelector('.review-form-close');
@@ -11,6 +12,7 @@
   var formReviewLinks = document.querySelector('.review-fields');
   var formReviewNameLink = document.querySelector('.review-fields-name');
   var formReviewTextLink = document.querySelector('.review-fields-text');
+  var browserCookies = require('browser-cookies');
 
   formOpenButton.onclick = function(evt) {
     evt.preventDefault();
@@ -24,15 +26,22 @@
   };
 
   function formInit() {
+    var savedReviewMark = +browserCookies.get('ReviewMark') || 3;
+    
     formSubmitButton.disabled = true;
+    formReviewMark.forEach(function(mark, i) {
+      formReviewMark[i].checked = (i + 1 === savedReviewMark) ? true : false;
+    });
     formReviewName.required = true;
     formReviewName.maxLength = 30;
     formReviewName.minLength = 2;
     formReviewName.pattern = '[A-Za-zА-Яа-яЁё _.]+';
+    formReviewName.value = browserCookies.get('ReviewName') || '';
     formReviewText.maxLength = 500;
     formReviewText.minLength = 1;
     formReviewTextLink.classList.add('invisible');
-
+    setLinksVisibility();
+    
     formReviewMark.forEach(function(mark) {
       mark.onclick = function() {
         if (mark.value < 3) {
@@ -105,5 +114,10 @@
       }
     }
   }
+  
+  form.onsubmit = function() {
+    browserCookies.set('ReviewMark', document.querySelector('[name=review-mark]:checked').value);
+    browserCookies.set('ReviewName', formReviewName.value);
+  };
 
 })();
