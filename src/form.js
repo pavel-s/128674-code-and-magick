@@ -44,6 +44,7 @@
           formReviewTextLink.classList.add('invisible');
           formSubmitButton.disabled = (formReviewName.validity.valid) ? false : true;
         }
+        setLinksVisibility();
       };
     });
 
@@ -61,7 +62,7 @@
           formSubmitButton.disabled = true;
         }
       }
-      hideLink();
+      setLinksVisibility();
     };
 
     formReviewText.oninput = function() {
@@ -70,10 +71,10 @@
       } else {
         formSubmitButton.disabled = true;
       }
-      hideLink();
+      setLinksVisibility();
     };
 
-    function hideLink() {
+    function setLinksVisibility() {
       if (formReviewText.required) {
         if (formReviewName.validity.valid) {
           formReviewNameLink.classList.add('invisible');
