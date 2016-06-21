@@ -41,21 +41,23 @@
     formReviewText.minLength = 1;
     formReviewTextLink.classList.add('invisible');
     setLinksVisibility();
+    setSubmitButtonDisabledProperty();
 
     formReviewMark.forEach(function(mark) {
       mark.onclick = function() {
-        if (mark.value < 3) {
-          formReviewText.required = true;
-          formReviewTextLink.classList.remove('invisible');
-          formSubmitButton.disabled = (formReviewName.validity.valid && formReviewText.validity.valid) ? false : true;
-        } else {
-          formReviewText.required = false;
-          formReviewTextLink.classList.add('invisible');
-          formSubmitButton.disabled = (formReviewName.validity.valid) ? false : true;
-        }
+        formReviewText.required = (mark.value < 3) ? true : false;
+        setSubmitButtonDisabledProperty();
         setLinksVisibility();
       };
     });
+    
+    function setSubmitButtonDisabledProperty() {
+      if (document.querySelector('[name=review-mark]:checked').value < 3) {
+        formSubmitButton.disabled = (formReviewName.validity.valid && formReviewText.validity.valid) ? false : true;
+      } else {
+        formSubmitButton.disabled = (formReviewName.validity.valid) ? false : true;
+      }
+    };
 
     formReviewName.oninput = function() {
       if (formReviewText.required) {
@@ -111,6 +113,7 @@
           formReviewNameLink.classList.remove('invisible');
           formReviewLinks.classList.remove('invisible');
         }
+        formReviewTextLink.classList.add('invisible');
       }
     }
   }
