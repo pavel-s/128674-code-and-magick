@@ -27,7 +27,7 @@
 
   function formInit() {
     var savedReviewMark = +browserCookies.get('ReviewMark') || 3;
-    
+
     formSubmitButton.disabled = true;
     formReviewMark.forEach(function(mark, i) {
       formReviewMark[i].checked = (i + 1 === savedReviewMark) ? true : false;
@@ -41,7 +41,7 @@
     formReviewText.minLength = 1;
     formReviewTextLink.classList.add('invisible');
     setLinksVisibility();
-    
+
     formReviewMark.forEach(function(mark) {
       mark.onclick = function() {
         if (mark.value < 3) {
@@ -114,10 +114,25 @@
       }
     }
   }
-  
+
   form.onsubmit = function() {
-    browserCookies.set('ReviewMark', document.querySelector('[name=review-mark]:checked').value);
-    browserCookies.set('ReviewName', formReviewName.value);
+    browserCookies.set('ReviewMark', document.querySelector('[name=review-mark]:checked').value, {expires: Date.now() + getCookiesExpires()});
+    browserCookies.set('ReviewName', formReviewName.value, {expires: Date.now() + getCookiesExpires()});
+
+    function getCookiesExpires() {
+      var nowDate = new Date();
+      var birthdayDate = new Date(nowDate.getFullYear(), 9, 2);
+      if (birthdayDate < nowDate) {
+        return nowDate - birthdayDate;
+      } else {
+        if (birthdayDate.getMonth() <= nowDate.getMonth()) {
+          return nowDate - birthdayDate;
+        } else {
+          birthdayDate.setFullYear(nowDate.getFullYear() - 1);
+          return nowDate - birthdayDate;
+        }
+      }
+    }
   };
 
 })();
