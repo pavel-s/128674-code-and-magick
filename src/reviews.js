@@ -32,6 +32,8 @@ var getReviewElement = function(data, container) {
 
   authorImage.onerror = function() {
     review.classList.add('review-load-failure');
+    clearTimeout(authorImageLoadTimeout);
+    authorImage.src = '';
   };
 
   authorImage.src = data.author.picture;
