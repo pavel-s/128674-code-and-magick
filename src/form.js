@@ -31,7 +31,7 @@
 
     formSubmitButton.disabled = true;
     formReviewMark.forEach(function(mark, i) {
-      formReviewMark[i].checked = (i + 1 === savedReviewMark) ? true : false;
+      formReviewMark[i].checked = (i + 1 === savedReviewMark);
     });
     formReviewMarkChecked = document.querySelector('[name=review-mark]:checked');
     formReviewName.required = true;
@@ -48,7 +48,7 @@
     formReviewMark.forEach(function(mark) {
       mark.onclick = function() {
         formReviewMarkChecked = document.querySelector('[name=review-mark]:checked');
-        formReviewText.required = (mark.value < 3) ? true : false;
+        formReviewText.required = mark.value < 3;
         setSubmitButtonDisabledProperty();
         setLinksVisibility();
       };
@@ -56,9 +56,9 @@
 
     function setSubmitButtonDisabledProperty() {
       if (formReviewMarkChecked.value < 3) {
-        formSubmitButton.disabled = (formReviewName.validity.valid && formReviewText.validity.valid) ? false : true;
+        formSubmitButton.disabled = !(formReviewName.validity.valid && formReviewText.validity.valid);
       } else {
-        formSubmitButton.disabled = (formReviewName.validity.valid) ? false : true;
+        formSubmitButton.disabled = !formReviewName.validity.valid;
       }
     }
 
