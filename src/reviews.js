@@ -4,6 +4,7 @@ var reviewsList = document.querySelector('.reviews-list');
 var templateElement = document.querySelector('template');
 var elementToClone;
 var IMAGE_LOAD_TIMEOUT = 10000;
+var REVIEW_LOAD_URL = '//o0.github.io/assets/json/reviews.json';
 var ratings = [
   'review-rating-two',
   'review-rating-three',
@@ -51,6 +52,29 @@ var getReviewElement = function(data, container) {
   return review;
 };
 
-window.reviews.forEach(function(review) {
-  getReviewElement(review, reviewsList);
+var renderReviews = function(reviews) {
+  reviews.forEach(function(review) {
+    getReviewElement(review, reviewsList);
+  });
+};
+
+var getReviews = function(callback) {
+  var xhr = new XMLHttpRequest();
+
+  xhr.onload = function(evt) {
+    var loadedData = JSON.parse(evt.target.response);
+    callback(loadedData);
+  };
+  
+  xhr.onloadstart = function() {
+    
+  };
+
+  xhr.open('GET', REVIEW_LOAD_URL);
+  xhr.send();
+};
+
+getReviews(function(loadedReviews) {
+  reviews = loadedReviews;
+  renderReviews(reviews);
 });
