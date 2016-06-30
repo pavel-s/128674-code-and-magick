@@ -739,6 +739,31 @@
     }
   };
 
+  var clouds = document.querySelector('.header-clouds');
+  var gameBlock = document.querySelector('.demo');
+  var THROTTLE_DELAY = 100;
+  var lastCall = Date.now();
+
+  function moveClouds() {
+    if (clouds.getBoundingClientRect().bottom > 0) {
+      clouds.style.backgroundPosition = window.scrollY + 'px';
+    }
+  }
+
+  window.addEventListener('scroll', function() {
+    if (Date.now() - lastCall >= THROTTLE_DELAY) {
+      moveClouds();
+      setGamePauseStatus();
+      lastCall = Date.now();
+    }
+  });
+
+  function setGamePauseStatus() {
+    if (gameBlock.getBoundingClientRect().bottom < 0) {
+      game.setGameStatus(window.Game.Verdict.PAUSE);
+    }
+  }
+
   window.Game = Game;
   window.Game.Verdict = Verdict;
 
