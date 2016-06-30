@@ -1,6 +1,8 @@
 'use strict';
 
 (function() {
+  var utils = require('./utils');
+
   var form = document.querySelector('.review-form');
   var formContainer = document.querySelector('.overlay-container');
   var formOpenButton = document.querySelector('.reviews-controls-new');
@@ -106,23 +108,8 @@
   }
 
   form.onsubmit = function() {
-    browserCookies.set('ReviewMark', formReviewMarkChecked.value, {expires: Date.now() + getCookiesExpires()});
-    browserCookies.set('ReviewName', formReviewName.value, {expires: Date.now() + getCookiesExpires()});
-
-    function getCookiesExpires() {
-      var nowDate = new Date();
-      var birthdayDate = new Date(nowDate.getFullYear(), 9, 2);
-      if (birthdayDate < nowDate) {
-        return nowDate - birthdayDate;
-      } else {
-        if (birthdayDate.getMonth() <= nowDate.getMonth()) {
-          return nowDate - birthdayDate;
-        } else {
-          birthdayDate.setFullYear(nowDate.getFullYear() - 1);
-          return nowDate - birthdayDate;
-        }
-      }
-    }
+    browserCookies.set('ReviewMark', formReviewMarkChecked.value, {expires: Date.now() + utils.getCookiesExpires()});
+    browserCookies.set('ReviewName', formReviewName.value, {expires: Date.now() + utils.getCookiesExpires()});
   };
 
 })();
