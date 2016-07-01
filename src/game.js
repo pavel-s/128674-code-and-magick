@@ -752,10 +752,10 @@
 
   window.addEventListener('scroll', function() {
     if (Date.now() - lastCall >= THROTTLE_DELAY) {
-      moveClouds();
       setGamePauseStatus();
       lastCall = Date.now();
     }
+    moveClouds();
   });
 
   function setGamePauseStatus() {
