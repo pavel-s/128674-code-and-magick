@@ -16,7 +16,8 @@
   var DEFAULT_FILTER = filterList.ALL;
   var PAGE_SIZE = 3;
   var pageNumber = 0;
-  
+  var savedFilter = localStorage.getItem('savedFilter');
+
   var messageDiv = document.createElement('div');
   messageDiv.innerHTML = 'Таких отзывов не найдено. Попробуйте другой фильтр.';
 
@@ -78,10 +79,10 @@
     reviews = loadedReviews;
     setFiltersEnabled();
 
-    if (localStorage.getItem('savedFilter') === null) {
+    if (savedFilter === null) {
       setFilterEnabled(DEFAULT_FILTER);
     } else {
-      setFilterEnabled(localStorage.getItem('savedFilter'));
+      setFilterEnabled(savedFilter);
     }
 
     showMoreReviews();
