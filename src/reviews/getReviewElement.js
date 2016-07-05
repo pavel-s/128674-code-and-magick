@@ -18,12 +18,10 @@ if ('content' in templateElement) {
   elementToClone = templateElement.querySelector('.review');
 }
 
-var getReviewElement = function(data, container) {
+var getReviewElement = function(data) {
   var review = elementToClone.cloneNode(true);
   var authorImage = new Image(124, 124);
   var authorImageLoadTimeout;
-
-  container.appendChild(review);
 
   authorImage.onload = function() {
     review.querySelector('.review-author').src = authorImage.src;
