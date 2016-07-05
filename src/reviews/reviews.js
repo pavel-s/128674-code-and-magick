@@ -16,6 +16,9 @@
   var DEFAULT_FILTER = filterList.ALL;
   var PAGE_SIZE = 3;
   var pageNumber = 0;
+  
+  var messageDiv = document.createElement('div');
+  messageDiv.innerHTML = 'Таких отзывов не найдено. Попробуйте другой фильтр.';
 
   reviewsFilter.classList.add('invisible');
 
@@ -28,7 +31,7 @@
         renderedReviews = [];
       }
       if (reviewsList.contains(messageDiv)) {
-        reviewsList.removeChild(reviewsList.firstChild);
+        reviewsList.removeChild(messageDiv);
       }
     }
 
@@ -40,8 +43,6 @@
         renderedReviews.push(new Review(review, reviewsList));
       });
     } else {
-      var messageDiv = document.createElement('div');
-      messageDiv.innerHTML = 'Таких отзывов не найдено. Попробуйте другой фильтр.';
       reviewsList.appendChild(messageDiv);
     }
     reviewsControlsMore.classList.toggle('invisible', to >= reviewsToRender.length);
