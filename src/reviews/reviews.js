@@ -51,12 +51,15 @@
     filteredReviews = filter(reviews, filterType);
     pageNumber = 0;
     renderReviews(filteredReviews, pageNumber, true);
+    var activeFilter = reviewsFilter.querySelector('#' + filterType);
+    activeFilter.checked = true;
   }
 
   function setFiltersEnabled() {
     reviewsFilter.addEventListener('change', function(evt) {
       if (evt.target.hasAttribute('name')) {
         setFilterEnabled(event.target.id);
+        localStorage.setItem('savedFilter', event.target.id);
       }
     });
   }
@@ -73,7 +76,13 @@
   getReviews(REVIEW_LOAD_URL, function(loadedReviews) {
     reviews = loadedReviews;
     setFiltersEnabled();
-    setFilterEnabled(DEFAULT_FILTER);
+
+    if (localStorage.getItem('savedFilter') === null) {
+      setFilterEnabled(DEFAULT_FILTER);
+    } else {
+      setFilterEnabled(localStorage.getItem('savedFilter'));
+    }
+
     showMoreReviews();
     reviewsFilter.classList.remove('invisible');
   });
