@@ -16,6 +16,10 @@
   var DEFAULT_FILTER = filterList.ALL;
   var PAGE_SIZE = 3;
   var pageNumber = 0;
+  var savedFilter = localStorage.getItem('savedFilter');
+
+  var messageDiv = document.createElement('div');
+  messageDiv.innerHTML = 'Таких отзывов не найдено. Попробуйте другой фильтр.';
 
   reviewsFilter.classList.add('invisible');
 
@@ -28,7 +32,7 @@
         renderedReviews = [];
       }
       if (reviewsList.contains(messageDiv)) {
-        reviewsList.removeChild(reviewsList.firstChild);
+        reviewsList.removeChild(messageDiv);
       }
     }
 
@@ -40,8 +44,6 @@
         renderedReviews.push(new Review(review, reviewsList));
       });
     } else {
-      var messageDiv = document.createElement('div');
-      messageDiv.innerHTML = 'Таких отзывов не найдено. Попробуйте другой фильтр.';
       reviewsList.appendChild(messageDiv);
     }
     reviewsControlsMore.classList.toggle('invisible', to >= reviewsToRender.length);
@@ -51,12 +53,15 @@
     filteredReviews = filter(reviews, filterType);
     pageNumber = 0;
     renderReviews(filteredReviews, pageNumber, true);
+    var activeFilter = reviewsFilter.querySelector('#' + filterType);
+    activeFilter.checked = true;
   }
 
   function setFiltersEnabled() {
     reviewsFilter.addEventListener('change', function(evt) {
       if (evt.target.hasAttribute('name')) {
         setFilterEnabled(event.target.id);
+        localStorage.setItem('savedFilter', event.target.id);
       }
     });
   }
@@ -73,7 +78,13 @@
   getReviews(REVIEW_LOAD_URL, function(loadedReviews) {
     reviews = loadedReviews;
     setFiltersEnabled();
-    setFilterEnabled(DEFAULT_FILTER);
+
+    if (savedFilter === null) {
+      setFilterEnabled(DEFAULT_FILTER);
+    } else {
+      setFilterEnabled(savedFilter);
+    }
+
     showMoreReviews();
     reviewsFilter.classList.remove('invisible');
   });
