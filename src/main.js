@@ -6,12 +6,12 @@ var gallery = require('./gallery');
 var photoGalleryImages = document.querySelectorAll('.photogallery-image img');
 var photoGallery = document.querySelector('.photogallery');
 
-var pics = gallery.getGalleryPictures(photoGalleryImages);
-
-var Gallery = new gallery.Gallery(pics);
+var Gallery = new gallery.Gallery();
+Gallery.getGalleryPictures(photoGalleryImages);
 
 photoGallery.onclick = function(evt) {
+  evt.preventDefault();
   if (evt.target.hasAttribute('data-number')) {
-    Gallery.showGallery(+evt.target.dataset.number);
+    location.hash = '#photo/' + evt.target.getAttribute('src');
   }
 };
