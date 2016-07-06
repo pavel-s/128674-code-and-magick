@@ -14,15 +14,22 @@ function Gallery() {
   this.galleryPictureCurrent = null;
   this.KEY_CODE_ESC = 27;
 
+  this.getPageUrl = function(href) {
+    var url = href.match(/(\S+)#photo/);
+    return url ? url[1] : href;
+  };
+
+  this.pageUrl = this.getPageUrl(location.href);
+
   this.galleryPreview.appendChild(this.galleryImg);
 
   this.showGallery = function(pic) {
     var i;
 
-    if (pic.isNumber) {
+    if (typeof pic === 'number') {
       i = pic;
     } else {
-      i = self.pictures.indexOf(location.origin + '/' + pic);
+      i = self.pictures.indexOf(self.pageUrl + pic);
     }
 
     self.galleryContainer.classList.remove('invisible');
